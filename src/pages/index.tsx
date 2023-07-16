@@ -1,7 +1,20 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useEffect, useState } from "react";
+
+import { getOptionsForVote } from "../utils/pokedex";
 
 const Home: NextPage = () => {
+  const [firstPokemon, setFirstPokemon] = useState<number>();
+  const [secondPokemon, setSecondPokemon] = useState<number>();
+
+  useEffect(() => {
+    const [firstNationalNumber, secondNationalNumber] = getOptionsForVote();
+
+    setFirstPokemon(firstNationalNumber);
+    setSecondPokemon(secondNationalNumber);
+  }, []);
+
   return (
     <>
       <Head>
@@ -13,9 +26,9 @@ const Home: NextPage = () => {
         <div className="text-2xl text-center">Which Pokémon is the roundest?</div>
         <div className="p-2"></div>
         <div className="border rounded p-8 flex justify-between max-w-2xl items-center">
-          <div className="w-16 h-16 bg-pink-400"></div>
+          <div className="w-16 h-16 bg-pink-400">{firstPokemon}</div>
           <div className="p-8">vs.</div>
-          <div className="w-16 h-16 bg-pink-400"></div>
+          <div className="w-16 h-16 bg-pink-400">{secondPokemon}</div>
         </div>
       </div>
     </>
