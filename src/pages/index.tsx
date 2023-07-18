@@ -2,18 +2,29 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
+import { api } from "../utils/api";
 import { getOptionsForVote } from "../utils/pokedex";
 
 const Home: NextPage = () => {
-  const [firstPokemon, setFirstPokemon] = useState<number>();
-  const [secondPokemon, setSecondPokemon] = useState<number>();
+  const [firstNationalNumber, setFirstNationalNumber] = useState<number>();
+  const [secondNationalNumber, setSecondNationalNumber] = useState<number>();
 
   useEffect(() => {
-    const [firstNationalNumber, secondNationalNumber] = getOptionsForVote();
+    const [first, second] = getOptionsForVote();
 
-    setFirstPokemon(firstNationalNumber);
-    setSecondPokemon(secondNationalNumber);
+    setFirstNationalNumber(first);
+    setSecondNationalNumber(second);
   }, []);
+
+  const firstPokemon = api.index.getPokemonByNationalNumber.useQuery({
+    nationalNumber: firstNationalNumber
+  });
+
+  const secondPokemon = api.index.getPokemonByNationalNumber.useQuery({
+    nationalNumber: secondNationalNumber
+  });
+
+  if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
 
   return (
     <>
@@ -24,11 +35,18 @@ const Home: NextPage = () => {
       </Head>
       <div className="h-screen w-screen flex flex-col justify-center items-center relative">
         <div className="text-2xl text-center">Which Pokémon is the roundest?</div>
-        <div className="p-2"></div>
+        <div className="p-2" />
         <div className="border rounded p-8 flex justify-between max-w-2xl items-center">
-          <div className="w-16 h-16 bg-pink-400">{firstPokemon}</div>
+          <div className="w-64 h-64 flex flex-col">
+            <img src={firstPokemon.data?.sprites.front_default} className="w-full" />
+            <div className="text-xl text-center capitalize mt-[-2rem]">{firstPokemon.data?.name}</div>
+          </div>
           <div className="p-8">vs.</div>
-          <div className="w-16 h-16 bg-pink-400">{secondPokemon}</div>
+          <div className="w-64 h-64 flex flex-col">
+            <img src={secondPokemon.data?.sprites.front_default} className="w-full" />
+            <div className="text-xl text-center capitalize mt-[-2rem]">{secondPokemon.data?.name}</div>
+          </div>
+          <div className="p-2" />
         </div>
       </div>
     </>
