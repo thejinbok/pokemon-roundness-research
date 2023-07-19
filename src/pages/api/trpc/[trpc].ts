@@ -2,7 +2,8 @@ import { createNextApiHandler } from "@trpc/server/adapters/next";
 
 import { env } from "../../../env/server.mjs";
 import { createTRPCContext } from "../../../server/api/trpc";
-import { appRouter } from "../../../server/api/root";
+import { appRouter, AppRouter } from "../../../server/api/root";
+import { inferProcedureOutput } from "@trpc/server";
 
 // export API handler
 export default createNextApiHandler({
@@ -17,3 +18,7 @@ export default createNextApiHandler({
         }
       : undefined,
 });
+
+export type inferQueryResponse<
+  TRouteKey extends keyof AppRouter["_def"]["queries"]
+> = inferProcedureOutput<AppRouter["_def"]["queries"][TRouteKey]>;
