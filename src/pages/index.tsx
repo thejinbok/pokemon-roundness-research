@@ -49,14 +49,14 @@ const Home: NextPage = () => {
         <div className="text-2xl text-center">Which Pokémon is the roundest?</div>
         <div className="p-2" />
         <div className="border rounded p-8 flex justify-between max-w-2xl items-center">
-          <div className="w-64 h-64 flex flex-col items-center">
-            <img src={firstPokemon.data?.sprites.front_default} className="w-full" />
+          <div className="flex flex-col items-center">
+            <img src={firstPokemon.data?.sprites.front_default} className="w-64 h-64" />
             <div className="text-xl text-center capitalize mt-[-2rem]">{firstPokemon.data?.name}</div>
             <button className={buttonClasses} onClick={() => voteForRoundest(firstNationalNumber)}>Rounder</button>
           </div>
           <div className="p-8">vs.</div>
-          <div className="w-64 h-64 flex flex-col items-center">
-            <img src={secondPokemon.data?.sprites.front_default} className="w-full" />
+          <div className="flex flex-col items-center">
+            <img src={secondPokemon.data?.sprites.front_default} className="w-64 h-64" />
             <div className="text-xl text-center capitalize mt-[-2rem]">{secondPokemon.data?.name}</div>
             <button className={buttonClasses} onClick={() => voteForRoundest(secondNationalNumber)}>Rounder</button>
           </div>
